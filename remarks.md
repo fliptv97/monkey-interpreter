@@ -1,1 +1,0 @@
-> And then we’d also need to change a few other methods and functions we’ll see later on. So it’s left as an exercise to the reader to fully support Unicode (and emojis!) in Monkey.
