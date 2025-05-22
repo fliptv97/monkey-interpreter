@@ -1,3 +1,5 @@
 ## Feature Ideas
-- [ ] Ternary operator support
+- [ ] Floats
+- [ ] Ternary operator
+- [ ] Enums
 - [ ] Unicode support
