@@ -87,15 +87,15 @@ func (p *Parser) parseReturnStatement() ast.Statement {
 	return stmt
 }
 
-func (p *Parser) currTokenIs(t token.TokenType) bool {
+func (p *Parser) currTokenIs(t token.Type) bool {
 	return p.currToken.Type == t
 }
 
-func (p *Parser) peekTokenIs(t token.TokenType) bool {
+func (p *Parser) peekTokenIs(t token.Type) bool {
 	return p.peekToken.Type == t
 }
 
-func (p *Parser) consumeSpecific(t token.TokenType) bool {
+func (p *Parser) consumeSpecific(t token.Type) bool {
 	if !p.peekTokenIs(t) {
 		p.peekError(t)
 		return false
@@ -108,7 +108,7 @@ func (p *Parser) Errors() []string {
 	return p.errors
 }
 
-func (p *Parser) peekError(t token.TokenType) {
+func (p *Parser) peekError(t token.Type) {
 	msg := fmt.Sprintf("expected next token to be %s, got %s instead", t, p.peekToken.Type)
 	p.errors = append(p.errors, msg)
 }
