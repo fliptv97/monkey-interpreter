@@ -8,55 +8,55 @@ type Token struct {
 }
 
 const (
-	ILLEGAL = "ILLEGAL"
+	Illegal = "Illegal"
 	EOF     = "EOF"
 
-	IDENT = "IDENT"
-	INT   = "INT"
+	Ident = "Ident"
+	Int   = "Int"
 
-	ASSIGN   = "="
-	PLUS     = "+"
-	MINUS    = "-"
-	BANG     = "!"
-	ASTERISK = "*"
-	SLASH    = "/"
+	Assign   = "="
+	Plus     = "+"
+	Minus    = "-"
+	Bang     = "!"
+	Asterisk = "*"
+	Slash    = "/"
 
-	LT = "<"
-	GT = ">"
+	LessThan    = "<"
+	GreaterThan = ">"
 
-	EQ     = "=="
-	NOT_EQ = "!="
+	Equal    = "=="
+	NotEqual = "!="
 
-	COMMA     = ","
-	SEMICOLON = ";"
+	Comma     = ","
+	Semicolon = ";"
 
-	LPAREN = "("
-	RPAREN = ")"
-	LBRACE = "{"
-	RBRACE = "}"
+	LeftParen  = "("
+	RightParen = ")"
+	LeftBrace  = "{"
+	RightBrace = "}"
 
-	FUNCTION = "FUNCTION"
-	LET      = "LET"
-	TRUE     = "TRUE"
-	FALSE    = "FALSE"
-	IF       = "IF"
-	ELSE     = "ELSE"
-	RETURN   = "RETURN"
+	Function = "Function"
+	Let      = "Let"
+	True     = "True"
+	False    = "False"
+	If       = "If"
+	Else     = "Else"
+	Return   = "Return"
 )
 
 var keywords = map[string]Type{
-	"let":    LET,
-	"fn":     FUNCTION,
-	"true":   TRUE,
-	"false":  FALSE,
-	"if":     IF,
-	"else":   ELSE,
-	"return": RETURN,
+	"let":    Let,
+	"fn":     Function,
+	"true":   True,
+	"false":  False,
+	"if":     If,
+	"else":   Else,
+	"return": Return,
 }
 
 func LookupIdent(ident string) Type {
 	if tok, ok := keywords[ident]; ok {
 		return tok
 	}
-	return IDENT
+	return Ident
 }

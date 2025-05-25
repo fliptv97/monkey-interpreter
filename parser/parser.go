@@ -34,7 +34,7 @@ func (p *Parser) ParseProgram() *ast.Program {
 	program := &ast.Program{}
 	program.Statements = []ast.Statement{}
 
-	for !p.currTokenIs(token.EOF) {
+	for !p.isCurrToken(token.EOF) {
 		stmt := p.parseStatement()
 		if stmt != nil {
 			program.Statements = append(program.Statements, stmt)
@@ -47,9 +47,9 @@ func (p *Parser) ParseProgram() *ast.Program {
 
 func (p *Parser) parseStatement() ast.Statement {
 	switch p.currToken.Type {
-	case token.LET:
+	case token.Let:
 		return p.parseLetStatement()
-	case token.RETURN:
+	case token.Return:
 		return p.parseReturnStatement()
 	default:
 		return nil
@@ -59,7 +59,7 @@ func (p *Parser) parseStatement() ast.Statement {
 func (p *Parser) parseLetStatement() ast.Statement {
 	stmt := &ast.LetStatement{Token: p.currToken}
 
-	if !p.consumeSpecific(token.IDENT) {
+	if !p.consumeSpecific(token.Ident) {
 		return nil
 	}
 	stmt.Name = &ast.Identifier{
@@ -67,10 +67,10 @@ func (p *Parser) parseLetStatement() ast.Statement {
 		Value: p.currToken.Literal,
 	}
 
-	if !p.consumeSpecific(token.ASSIGN) {
+	if !p.consumeSpecific(token.Assign) {
 		return nil
 	}
-	for !p.currTokenIs(token.SEMICOLON) {
+	for !p.isCurrToken(token.Semicolon) {
 		p.nextToken()
 	}
 
@@ -80,24 +80,24 @@ func (p *Parser) parseLetStatement() ast.Statement {
 func (p *Parser) parseReturnStatement() ast.Statement {
 	stmt := &ast.ReturnStatement{Token: p.currToken}
 
-	for !p.currTokenIs(token.SEMICOLON) {
+	for !p.isCurrToken(token.Semicolon) {
 		p.nextToken()
 	}
 
 	return stmt
 }
 
-func (p *Parser) currTokenIs(t token.Type) bool {
+func (p *Parser) isCurrToken(t token.Type) bool {
 	return p.currToken.Type == t
 }
 
-func (p *Parser) peekTokenIs(t token.Type) bool {
+func (p *Parser) isPeekToken(t token.Type) bool {
 	return p.peekToken.Type == t
 }
 
 func (p *Parser) consumeSpecific(t token.Type) bool {
-	if !p.peekTokenIs(t) {
-		p.peekError(t)
+	if !p.isPeekToken(t) {
+		p.registerPeekError(t)
 		return false
 	}
 	p.nextToken()
@@ -108,7 +108,7 @@ func (p *Parser) Errors() []string {
 	return p.errors
 }
 
-func (p *Parser) peekError(t token.Type) {
+func (p *Parser) registerPeekError(t token.Type) {
 	msg := fmt.Sprintf("expected next token to be %s, got %s instead", t, p.peekToken.Type)
 	p.errors = append(p.errors, msg)
 }
