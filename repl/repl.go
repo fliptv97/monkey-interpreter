@@ -10,21 +10,28 @@ import (
 
 const PROMPT = ">> "
 
-func Start(in io.Reader, out io.Writer) {
+func Start(in io.Reader, out io.Writer) error {
 	scanner := bufio.NewScanner(in)
 
 	for {
-		fmt.Fprintf(out, PROMPT)
+		_, err := fmt.Fprintf(out, PROMPT)
+		if err != nil {
+			return err
+		}
+
 		scanned := scanner.Scan()
 		if !scanned {
-			return
+			return nil
 		}
 
 		line := scanner.Text()
 		l := lexer.New(line)
 
 		for tok := l.NextToken(); tok.Type != token.EOF; tok = l.NextToken() {
-			fmt.Fprintf(out, "%+v\n", tok)
+			_, err = fmt.Fprintf(out, "%+v\n", tok)
+			if err != nil {
+				return err
+			}
 		}
 	}
 }
