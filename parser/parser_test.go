@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"github.com/fliptv97/monkey-interpreter/ast"
 	"github.com/fliptv97/monkey-interpreter/lexer"
 	"testing"
@@ -169,5 +170,67 @@ func TestIntegerLiteralExpression(t *testing.T) {
 	if literal.TokenLiteral() != "5" {
 		t.Errorf("literal.TokenLiteral not %s. got=%s", "5",
 			literal.TokenLiteral())
+	}
+}
+
+func testIntegerLiteral(t *testing.T, il ast.Expression, value int64) bool {
+	integerLiteral, ok := il.(*ast.IntegerLiteral)
+	if !ok {
+		t.Errorf("il not *ast.IntegerLiteral. got=%T", il)
+		return false
+	}
+
+	if integerLiteral.Value != value {
+		t.Errorf("integerLiteral.Value not %d. got=%d", value, integerLiteral.Value)
+		return false
+	}
+
+	if integerLiteral.TokenLiteral() != fmt.Sprintf("%d", value) {
+		t.Errorf("integerLiteral.TokenLiteral not %d. got=%s", value,
+			integerLiteral.TokenLiteral())
+		return false
+	}
+
+	return true
+}
+
+func TestParsingPrefixExpressions(t *testing.T) {
+	prefixTests := []struct {
+		input        string
+		operator     string
+		integerValue int64
+	}{
+		{"!5;", "!", 5},
+		{"-15;", "-", 15},
+	}
+
+	for _, tt := range prefixTests {
+		l := lexer.New(tt.input)
+		p := New(l)
+		program := p.ParseProgram()
+		checkParserErrors(t, p)
+
+		if len(program.Statements) != 1 {
+			t.Fatalf("program.Statements does not contain %d statements. got=%d\n",
+				1, len(program.Statements))
+		}
+
+		stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+		if !ok {
+			t.Fatalf("program.Statements[0] is not ast.ExpressionStatement. got=%T",
+				program.Statements[0])
+		}
+
+		expr, ok := stmt.Expression.(*ast.PrefixExpression)
+		if !ok {
+			t.Fatalf("stmt is not ast.PrefixExpression. got=%T", stmt.Expression)
+		}
+		if expr.Operator != tt.operator {
+			t.Fatalf("expr.Operator is not '%s'. got=%s",
+				tt.operator, expr.Operator)
+		}
+		if !testIntegerLiteral(t, expr.Right, tt.integerValue) {
+			return
+		}
 	}
 }
