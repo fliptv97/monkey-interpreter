@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/fliptv97/monkey-interpreter/repl"
 	"os"
 	"os/user"
+
+	"github.com/fliptv97/monkey-interpreter/repl"
 )
 
 func main() {

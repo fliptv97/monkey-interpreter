@@ -3,9 +3,10 @@ package repl
 import (
 	"bufio"
 	"fmt"
+	"io"
+
 	"github.com/fliptv97/monkey-interpreter/lexer"
 	"github.com/fliptv97/monkey-interpreter/token"
-	"io"
 )
 
 const PROMPT = ">> "
@@ -14,7 +15,7 @@ func Start(in io.Reader, out io.Writer) error {
 	scanner := bufio.NewScanner(in)
 
 	for {
-		_, err := fmt.Fprintf(out, PROMPT)
+		_, err := fmt.Fprint(out, PROMPT)
 		if err != nil {
 			return err
 		}

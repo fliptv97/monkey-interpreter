@@ -1,8 +1,9 @@
 package lexer
 
 import (
-	"github.com/fliptv97/monkey-interpreter/token"
 	"testing"
+
+	"github.com/fliptv97/monkey-interpreter/token"
 )
 
 func TestNextToken(t *testing.T) {

@@ -1,7 +1,10 @@
 package ast
 
-import "bytes"
-import "github.com/fliptv97/monkey-interpreter/token"
+import (
+	"bytes"
+
+	"github.com/fliptv97/monkey-interpreter/token"
+)
 
 type Node interface {
 	TokenLiteral() string

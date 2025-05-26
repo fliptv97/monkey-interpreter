@@ -2,15 +2,16 @@ package parser
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/fliptv97/monkey-interpreter/ast"
 	"github.com/fliptv97/monkey-interpreter/lexer"
 	"github.com/fliptv97/monkey-interpreter/token"
-	"strconv"
 )
 
 type (
 	prefixParseFn func() ast.Expression
-	infixParseFn  func(lvalue ast.Expression) ast.Expression
+	infixParseFn  func(ast.Expression) ast.Expression
 )
 
 type Parser struct {
